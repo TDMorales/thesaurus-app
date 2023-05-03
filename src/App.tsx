@@ -13,17 +13,19 @@ function App() {
   const handleFetchSynonym = (e: React.FormEvent) => {
     e.preventDefault()
 
-    fetch(`https://api.datamuse.com/words?rel_syn=${input}`)
-      .then((res) => {
-        if(!res.ok){
-          alert(`there was an issue with the query ${res.statusText}`)
-        }
-        return res.json()
-      })
-      .then(json => setResults(json))
-      .catch((err) =>{
-        alert(`Error getting synonyms: ${err.message}`)
-      })
+    Promise.all([
+      fetch(`https://api.datamuse.com/words?rel_syn=${input}`)
+        .then((res) => {
+          if(!res.ok){
+            alert(`there was an issue with the query ${res.statusText}`)
+          }
+          return res.json()
+        })
+        .then(json => setResults(json))
+        .catch((err) =>{
+          alert(`Error getting synonyms: ${err.message}`)
+        })
+    ])
   }
 
   return (
